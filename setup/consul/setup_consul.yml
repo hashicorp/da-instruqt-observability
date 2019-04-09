@@ -470,40 +470,6 @@ spec:
                   grep -E '".+"'
 
 ---
-# Source: consul/templates/tests/test-runner.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: "release-name-consul-test-a7kqt"
-  labels:
-    app: consul
-    chart: consul-helm
-    heritage: Tiller
-    release: release-name
-  annotations:
-    "helm.sh/hook": test-success
-spec:
-  containers:
-    - name: consul-test
-      image: "nicholasjackson/consul:9587-b2c831b"
-      env:
-        - name: HOST_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.hostIP
-      command:
-        - "/bin/sh"
-        - "-ec"
-        - |
-            export VALUE="eqafdqiypnt3rfvkwktlvnkb"
-            export CONSUL_HTTP_ADDR="${HOST_IP}:8500"
-            consul kv delete _consul_helm_test
-            consul kv put _consul_helm_test $VALUE
-            [ `consul kv get _consul_helm_test` = "$VALUE" ]
-            consul kv delete _consul_helm_test
-  restartPolicy: Never
-
----
 # Source: consul/templates/connect-inject-deployment.yaml
 # The deployment for running the Connect sidecar injector
 apiVersion: apps/v1
