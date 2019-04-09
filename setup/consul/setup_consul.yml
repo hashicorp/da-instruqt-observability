@@ -395,7 +395,7 @@ spec:
 
       containers:
         - name: consul
-          image: "consul:1.4.4"
+          image: "nicholasjackson/consul:9587-b2c831b"
           env:
             - name: POD_IP
               valueFrom:
@@ -485,7 +485,7 @@ metadata:
 spec:
   containers:
     - name: consul-test
-      image: "consul:1.4.4"
+      image: "nicholasjackson/consul:9587-b2c831b"
       env:
         - name: HOST_IP
           valueFrom:
@@ -549,7 +549,7 @@ spec:
 
               consul-k8s inject-connect \
                 -default-inject=false \
-                -consul-image="consul:1.4.4" \
+                -consul-image="nicholasjackson/consul:9587-b2c831b" \
                 -listen=:8080 \
                 -tls-auto=${CONSUL_FULLNAME}-connect-injector-cfg \
                 -tls-auto-hosts=${CONSUL_FULLNAME}-connect-injector-svc,${CONSUL_FULLNAME}-connect-injector-svc.${NAMESPACE},${CONSUL_FULLNAME}-connect-injector-svc.${NAMESPACE}.svc
@@ -628,7 +628,7 @@ spec:
             name: release-name-consul-server-config
       containers:
         - name: consul
-          image: "consul:1.4.4"
+          image: "nicholasjackson/consul:9587-b2c831b"
           env:
             - name: POD_IP
               valueFrom:
