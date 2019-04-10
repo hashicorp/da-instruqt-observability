@@ -392,15 +392,9 @@ spec:
               protocol: TCP
           env:
             - name: GF_SECURITY_ADMIN_USER
-              valueFrom:
-                secretKeyRef:
-                  name: grafana
-                  key: admin-user
+              value: admin
             - name: GF_SECURITY_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: grafana
-                  key: admin-password
+              value: admin
           livenessProbe:
             failureThreshold: 10
             httpGet:
