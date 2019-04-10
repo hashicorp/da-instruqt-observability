@@ -9,6 +9,7 @@ tags:
 - ""
 owner: hashicorp
 developers:
+- pbanks@hashicorp.com
 - jackson.nic@gmail.com
 - christie@hashicorp.com
 - anubhav9mishra@gmail.com
@@ -56,4 +57,4 @@ challenges:
     port: 30010
   difficulty: basic
   timelimit: 3600
-checksum: "8765870060691238754"
+checksum: "4121710230601866135"
