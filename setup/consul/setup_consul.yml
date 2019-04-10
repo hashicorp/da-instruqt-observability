@@ -5,7 +5,7 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: release-name-consul-server
+  name: consul-server
   namespace: default
   labels:
     app: consul
@@ -27,7 +27,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: release-name-consul-client-config
+  name: consul-client-config
   namespace: default
   labels:
     app: consul
@@ -45,7 +45,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: release-name-consul-server-config
+  name: consul-server-config
   namespace: default
   labels:
     app: consul
@@ -63,7 +63,7 @@ data:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: release-name-consul-client
+  name: consul-client
   namespace: default
   labels:
     app: consul
@@ -77,7 +77,7 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: release-name-consul-connect-injector-webhook-svc-account
+  name: consul-connect-injector-webhook-svc-account
   namespace: default
   labels:
     app: consul
@@ -91,7 +91,7 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: release-name-consul-server
+  name: consul-server
   namespace: default
   labels:
     app: consul
@@ -105,7 +105,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: release-name-consul-client
+  name: consul-client
   labels:
     app: consul
     chart: consul-helm
@@ -118,7 +118,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: release-name-consul-connect-injector-webhook
+  name: consul-connect-injector-webhook
   labels:
     app: consul
     chart: consul-helm
@@ -139,7 +139,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: release-name-consul-server
+  name: consul-server
   labels:
     app: consul
     chart: consul-helm
@@ -152,7 +152,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: release-name-consul-client
+  name: consul-client
   labels:
     app: consul
     chart: consul-helm
@@ -161,10 +161,10 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: release-name-consul-client
+  name: consul-client
 subjects:
   - kind: ServiceAccount
-    name: release-name-consul-client
+    name: consul-client
     namespace: default
 
 ---
@@ -173,7 +173,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: release-name-consul-connect-injector-webhook-admin-role-binding
+  name: consul-connect-injector-webhook-admin-role-binding
   labels:
     app: consul
     chart: consul-helm
@@ -182,10 +182,10 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: release-name-consul-connect-injector-webhook
+  name: consul-connect-injector-webhook
 subjects:
   - kind: ServiceAccount
-    name: release-name-consul-connect-injector-webhook-svc-account
+    name: consul-connect-injector-webhook-svc-account
     namespace: default
 
 ---
@@ -194,7 +194,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: release-name-consul-server
+  name: consul-server
   labels:
     app: consul
     chart: consul-helm
@@ -203,10 +203,10 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: release-name-consul-server
+  name: consul-server
 subjects:
   - kind: ServiceAccount
-    name: release-name-consul-server
+    name: consul-server
     namespace: default
 
 ---
@@ -215,7 +215,7 @@ subjects:
 apiVersion: v1
 kind: Service
 metadata:
-  name: release-name-consul-connect-injector-svc
+  name: consul-connect-injector-svc
   namespace: default
   labels:
     app: consul
@@ -238,7 +238,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: release-name-consul-dns
+  name: consul-dns
   namespace: default
   labels:
     app: consul
@@ -270,7 +270,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: release-name-consul-server
+  name: consul-server
   namespace: default
   labels:
     app: consul
@@ -329,7 +329,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: release-name-consul-ui
+  name: consul-ui
   namespace: default
   labels:
     app: consul
@@ -354,7 +354,7 @@ spec:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: release-name-consul
+  name: consul
   namespace: default
   labels:
     app: consul
@@ -381,7 +381,7 @@ spec:
         "consul.hashicorp.com/connect-inject": "false"
     spec:
       terminationGracePeriodSeconds: 10
-      serviceAccountName: release-name-consul-client
+      serviceAccountName: consul-client
 
       # Consul agents require a directory for data, even clients. The data
       # is okay to be wiped though if the Pod is removed, so just use an
@@ -391,7 +391,7 @@ spec:
           emptyDir: {}
         - name: config
           configMap:
-            name: release-name-consul-client-config
+            name: consul-client-config
 
       containers:
         - name: consul
@@ -414,7 +414,7 @@ spec:
             - "/bin/sh"
             - "-ec"
             - |
-              CONSUL_FULLNAME="release-name-consul"
+              CONSUL_FULLNAME="consul"
 
               exec /bin/consul agent \
                 -node="${NODE}" \
@@ -475,7 +475,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: release-name-consul-connect-injector-webhook-deployment
+  name: consul-connect-injector-webhook-deployment
   namespace: default
   labels:
     app: consul
@@ -498,7 +498,7 @@ spec:
         release: release-name
         component: connect-injector
     spec:
-      serviceAccountName: release-name-consul-connect-injector-webhook-svc-account
+      serviceAccountName: consul-connect-injector-webhook-svc-account
       containers:
         - name: sidecar-injector
           image: "hashicorp/consul-k8s:0.7.0"
@@ -511,7 +511,7 @@ spec:
             - "/bin/sh"
             - "-ec"
             - |
-              CONSUL_FULLNAME="release-name-consul"
+              CONSUL_FULLNAME="consul"
 
               consul-k8s inject-connect \
                 -default-inject=false \
@@ -546,7 +546,7 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: release-name-consul-server
+  name: consul-server
   namespace: default
   labels:
     app: consul
@@ -554,7 +554,7 @@ metadata:
     heritage: Tiller
     release: release-name
 spec:
-  serviceName: release-name-consul-server
+  serviceName: consul-server
   podManagementPolicy: Parallel
   replicas: 1
   selector:
@@ -585,13 +585,13 @@ spec:
                   component: server
               topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 10
-      serviceAccountName: release-name-consul-server
+      serviceAccountName: consul-server
       securityContext:
         fsGroup: 1000
       volumes:
         - name: config
           configMap:
-            name: release-name-consul-server-config
+            name: consul-server-config
       containers:
         - name: consul
           image: "nicholasjackson/consul:9587-b2c831b"
@@ -609,7 +609,7 @@ spec:
             - "/bin/sh"
             - "-ec"
             - |
-              CONSUL_FULLNAME="release-name-consul"
+              CONSUL_FULLNAME="consul"
 
               exec /bin/consul agent \
                 -advertise="${POD_IP}" \
@@ -682,7 +682,7 @@ spec:
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: release-name-consul-connect-injector-cfg
+  name: consul-connect-injector-cfg
   namespace: default
   labels:
     app: consul
@@ -690,10 +690,10 @@ metadata:
     heritage: Tiller
     release: release-name
 webhooks:
-  - name: release-name-consul-connect-injector.consul.hashicorp.com
+  - name: consul-connect-injector.consul.hashicorp.com
     clientConfig:
       service:
-        name: release-name-consul-connect-injector-svc
+        name: consul-connect-injector-svc
         namespace: default
         path: "/mutate"
       caBundle: 
