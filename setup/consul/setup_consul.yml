@@ -11,12 +11,14 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    spec:
+    
+spec:
   maxUnavailable: 0
   selector:
     matchLabels:
       app: consul
-            component: server
+      
+      component: server
 
 ---
 # Source: consul/templates/client-config-configmap.yaml
@@ -31,7 +33,8 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    data:
+    
+data:
   extra-from-values.json: |-
     {}
     
@@ -48,7 +51,8 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    data:
+    
+data:
   extra-from-values.json: |-
     {}
     
@@ -66,6 +70,7 @@ metadata:
     chart: consul-helm
     heritage: Tiller
     
+
 ---
 # Source: consul/templates/connect-inject-serviceaccount.yaml
 
@@ -79,6 +84,7 @@ metadata:
     chart: consul-helm
     heritage: Tiller
     
+
 ---
 # Source: consul/templates/server-serviceaccount.yaml
 
@@ -92,6 +98,7 @@ metadata:
     chart: consul-helm
     heritage: Tiller
     
+
 ---
 # Source: consul/templates/client-clusterrole.yaml
 
@@ -104,6 +111,7 @@ metadata:
     chart: consul-helm
     heritage: Tiller
     
+
 ---
 # Source: consul/templates/connect-inject-clusterrole.yaml
 # The ClusterRole to enable the Connect injector to get, list, watch and patch MutatingWebhookConfiguration.
@@ -115,7 +123,8 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    rules:
+    
+rules:
 - apiGroups: ["admissionregistration.k8s.io"]
   resources: ["mutatingwebhookconfigurations"]
   verbs: 
@@ -136,6 +145,7 @@ metadata:
     chart: consul-helm
     heritage: Tiller
     
+
 ---
 # Source: consul/templates/client-clusterrolebinding.yaml
 
@@ -147,7 +157,8 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    roleRef:
+    
+roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: consul-client
@@ -167,7 +178,8 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    roleRef:
+    
+roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: consul-connect-injector-webhook
@@ -187,7 +199,8 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    roleRef:
+    
+roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: consul-server
@@ -208,13 +221,15 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    spec:
+    
+spec:
   ports:
   - port: 443
     targetPort: 8080
   selector:
     app: consul
-        component: connect-injector
+    
+    component: connect-injector
 
 
 ---
@@ -229,7 +244,8 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    spec:
+    
+spec:
   ports:
     - name: dns-tcp
       port: 53
@@ -241,7 +257,8 @@ metadata:
       targetPort: dns-udp
   selector:
     app: consul
-        hasDNS: "true"
+    
+    hasDNS: "true"
 
 ---
 # Source: consul/templates/server-service.yaml
@@ -259,6 +276,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
+    
   annotations:
     # This must be set in addition to publishNotReadyAddresses due
     # to an open issue where it may not work:
@@ -302,7 +320,8 @@ spec:
       targetPort: dns-udp
   selector:
     app: consul
-        component: server
+    
+    component: server
 
 ---
 # Source: consul/templates/ui-service.yaml
@@ -316,10 +335,12 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    spec:
+    
+spec:
   selector:
     app: consul
-        component: server
+    
+    component: server
   ports:
     - name: http
       port: 80
@@ -339,19 +360,22 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    spec:
+    
+spec:
   selector:
     matchLabels:
       app: consul
       chart: consul-helm
-            component: client
+      
+      component: client
       hasDNS: "true"
   template:
     metadata:
       labels:
         app: consul
         chart: consul-helm
-                component: client
+        
+        component: client
         hasDNS: "true"
       annotations:
         "consul.hashicorp.com/connect-inject": "false"
@@ -457,19 +481,22 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    spec:
+    
+spec:
   replicas: 1
   selector:
     matchLabels:
       app: consul
       chart: consul-helm
-            component: connect-injector
+      
+      component: connect-injector
   template:
     metadata:
       labels:
         app: consul
         chart: consul-helm
-                component: connect-injector
+        
+        component: connect-injector
     spec:
       serviceAccountName: consul-connect-injector-webhook-svc-account
       containers:
@@ -525,7 +552,8 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    spec:
+    
+spec:
   serviceName: consul-server
   podManagementPolicy: Parallel
   replicas: 1
@@ -533,14 +561,16 @@ metadata:
     matchLabels:
       app: consul
       chart: consul-helm
-            component: server
+      
+      component: server
       hasDNS: "true"
   template:
     metadata:
       labels:
         app: consul
         chart: consul-helm
-                component: server
+        
+        component: server
         hasDNS: "true"
       annotations:
         "consul.hashicorp.com/connect-inject": "false"
@@ -551,7 +581,8 @@ metadata:
             - labelSelector:
                 matchLabels:
                   app: consul
-                                    component: server
+                  
+                  component: server
               topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 10
       serviceAccountName: consul-server
@@ -657,7 +688,8 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    webhooks:
+    
+webhooks:
   - name: consul-connect-injector.consul.hashicorp.com
     clientConfig:
       service:

@@ -4,12 +4,13 @@
 apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: -grafana
+  name: grafana
   labels:
     app: grafana
     chart: grafana-3.1.0
     heritage: Tiller
-      annotations:
+    
+  annotations:
     seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
     seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
     apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
@@ -57,11 +58,12 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: -grafana
+  name: grafana
   labels:
     app: grafana
     chart: grafana-3.1.0
-        heritage: Tiller
+    
+    heritage: Tiller
 type: Opaque
 data:
   admin-user: "YWRtaW4="
@@ -73,11 +75,12 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: -grafana
+  name: grafana
   labels:
     app: grafana
     chart: grafana-3.1.0
-        heritage: Tiller
+    
+    heritage: Tiller
 data:
   grafana.ini: |
     [analytics]
@@ -138,11 +141,12 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: -grafana-dashboards-default
+  name: grafana-dashboards-default
   labels:
     app: grafana
     chart: grafana-3.1.0
-        heritage: Tiller
+    
+    heritage: Tiller
     dashboard-provider: default
 data:
 
@@ -151,15 +155,16 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: -grafana-test
+  name: grafana-test
   labels:
-    app: -grafana
+    app: grafana
     chart: "grafana-3.1.0"
     heritage: "Tiller"
-    data:
+    
+data:
   run.sh: |-
     @test "Test Health" {
-      url="http://-grafana/api/health"
+      url="http://grafana/api/health"
 
       code=$(curl -s -o /dev/null -I -w "%{http_code}" $url)
       [ "$code" == "200" ]
@@ -175,7 +180,8 @@ metadata:
     app: grafana
     chart: grafana-3.1.0
     heritage: Tiller
-      name: -grafana
+    
+  name: grafana
 
 ---
 # Source: grafana/templates/clusterrole.yaml
@@ -186,8 +192,9 @@ metadata:
   labels:
     app: grafana
     chart: grafana-3.1.0
-        heritage: Tiller
-  name: -grafana-clusterrole
+    
+    heritage: Tiller
+  name: grafana-clusterrole
 rules: []
 
 ---
@@ -196,63 +203,67 @@ rules: []
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: -grafana-clusterrolebinding
+  name: grafana-clusterrolebinding
   labels:
     app: grafana
     chart: grafana-3.1.0
-        heritage: Tiller
+    
+    heritage: Tiller
 subjects:
   - kind: ServiceAccount
-    name: -grafana
+    name: grafana
     namespace: default
 roleRef:
   kind: ClusterRole
-  name: -grafana-clusterrole
+  name: grafana-clusterrole
   apiGroup: rbac.authorization.k8s.io
 ---
 # Source: grafana/templates/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
 metadata:
-  name: -grafana
+  name: grafana
   labels:
     app: grafana
     chart: grafana-3.1.0
     heritage: Tiller
-    rules:
+    
+rules:
 - apiGroups:      ['extensions']
   resources:      ['podsecuritypolicies']
   verbs:          ['use']
-  resourceNames:  [-grafana]
+  resourceNames:  [grafana]
 
 ---
 # Source: grafana/templates/rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
-  name: -grafana
+  name: grafana
   labels:
     app: grafana
     chart: grafana-3.1.0
     heritage: Tiller
-    roleRef:
+    
+roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: -grafana
+  name: grafana
 subjects:
 - kind: ServiceAccount
-  name: -grafana
+  name: grafana
   namespace: default
 ---
 # Source: grafana/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: -grafana
+  name: grafana
   labels:
     app: grafana
     chart: grafana-3.1.0
-        heritage: Tiller
+    
+    heritage: Tiller
 spec:
   type: NodePort
   ports:
@@ -266,17 +277,19 @@ spec:
   selector:
     app: grafana
     
+
 ---
 # Source: grafana/templates/tests/test.yaml
 apiVersion: v1
 kind: Pod
 metadata:
-  name: -grafana-test
+  name: grafana-test
   labels:
-    app: -grafana
+    app: grafana
     chart: "grafana-3.1.0"
     heritage: "Tiller"
-      annotations:
+    
+  annotations:
     "helm.sh/hook": test-success
 spec:
   initContainers:
@@ -293,7 +306,7 @@ spec:
       - mountPath: /tools
         name: tools
   containers:
-    - name: -test
+    - name: test
       image: "dduportal/bats:0.4.0"
       command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
       volumeMounts:
@@ -305,7 +318,7 @@ spec:
   volumes:
   - name: tests
     configMap:
-      name: -grafana-test
+      name: grafana-test
   - name: tools
     emptyDir: {}
   restartPolicy: Never
@@ -315,24 +328,27 @@ spec:
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: -grafana
+  name: grafana
   labels:
     app: grafana
     chart: grafana-3.1.0
-        heritage: Tiller
+    
+    heritage: Tiller
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: grafana
-        strategy:
+      
+  strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
         app: grafana
-            spec:
-      serviceAccountName: -grafana
+        
+    spec:
+      serviceAccountName: grafana
       securityContext:
         fsGroup: 472
         runAsUser: 472
@@ -378,12 +394,12 @@ spec:
             - name: GF_SECURITY_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: -grafana
+                  name: grafana
                   key: admin-user
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: -grafana
+                  name: grafana
                   key: admin-password
           livenessProbe:
             failureThreshold: 10
@@ -404,13 +420,13 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: -grafana
+            name: grafana
         - name: dashboards-default
           configMap:
-            name: -grafana-dashboards-default
+            name: grafana-dashboards-default
         - name: ldap
           secret:
-            secretName: -grafana
+            secretName: grafana
             items:
               - key: ldap-toml
                 path: ldap.toml

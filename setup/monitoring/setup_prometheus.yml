@@ -6,9 +6,10 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-alertmanager
+  name: prometheus-alertmanager
 data:
   alertmanager.yml: |
     global: {}
@@ -28,9 +29,10 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-server
+  name: prometheus-server
 data:
   alerts: |
     {}
@@ -237,9 +239,10 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-alertmanager
+  name: prometheus-alertmanager
 ---
 # Source: prometheus/templates/kube-state-metrics-serviceaccount.yaml
 apiVersion: v1
@@ -248,9 +251,10 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-kube-state-metrics
+  name: prometheus-kube-state-metrics
 ---
 # Source: prometheus/templates/node-exporter-serviceaccount.yaml
 apiVersion: v1
@@ -259,9 +263,10 @@ metadata:
   labels:
     component: "node-exporter"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-node-exporter
+  name: prometheus-node-exporter
 ---
 # Source: prometheus/templates/pushgateway-serviceaccount.yaml
 apiVersion: v1
@@ -270,9 +275,10 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-pushgateway
+  name: prometheus-pushgateway
 ---
 # Source: prometheus/templates/server-serviceaccount.yaml
 
@@ -282,9 +288,10 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-server
+  name: prometheus-server
 
 ---
 # Source: prometheus/templates/kube-state-metrics-clusterrole.yaml
@@ -294,9 +301,10 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-kube-state-metrics
+  name: prometheus-kube-state-metrics
 rules:
   - apiGroups:
       - ""
@@ -366,9 +374,10 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-server
+  name: prometheus-server
 rules:
   - apiGroups:
       - ""
@@ -406,17 +415,18 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-kube-state-metrics
+  name: prometheus-kube-state-metrics
 subjects:
   - kind: ServiceAccount
-    name: -prometheus-kube-state-metrics
+    name: prometheus-kube-state-metrics
     namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: -prometheus-kube-state-metrics
+  name: prometheus-kube-state-metrics
 ---
 # Source: prometheus/templates/server-clusterrolebinding.yaml
 
@@ -426,17 +436,18 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-server
+  name: prometheus-server
 subjects:
   - kind: ServiceAccount
-    name: -prometheus-server
+    name: prometheus-server
     namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: -prometheus-server
+  name: prometheus-server
 
 ---
 # Source: prometheus/templates/alertmanager-service.yaml
@@ -446,9 +457,10 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-alertmanager
+  name: prometheus-alertmanager
 spec:
   ports:
     - name: http
@@ -458,7 +470,8 @@ spec:
   selector:
     component: "alertmanager"
     app: prometheus
-      type: "ClusterIP"
+    
+  type: "ClusterIP"
 
 ---
 # Source: prometheus/templates/kube-state-metrics-svc.yaml
@@ -471,9 +484,10 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-kube-state-metrics
+  name: prometheus-kube-state-metrics
 spec:
   clusterIP: None
   ports:
@@ -484,7 +498,8 @@ spec:
   selector:
     component: "kube-state-metrics"
     app: prometheus
-      type: "ClusterIP"
+    
+  type: "ClusterIP"
 
 ---
 # Source: prometheus/templates/node-exporter-service.yaml
@@ -497,9 +512,10 @@ metadata:
   labels:
     component: "node-exporter"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-node-exporter
+  name: prometheus-node-exporter
 spec:
   clusterIP: None
   ports:
@@ -510,7 +526,8 @@ spec:
   selector:
     component: "node-exporter"
     app: prometheus
-      type: "ClusterIP"
+    
+  type: "ClusterIP"
 ---
 # Source: prometheus/templates/pushgateway-service.yaml
 apiVersion: v1
@@ -522,9 +539,10 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-pushgateway
+  name: prometheus-pushgateway
 spec:
   ports:
     - name: http
@@ -534,7 +552,8 @@ spec:
   selector:
     component: "pushgateway"
     app: prometheus
-      type: "ClusterIP"
+    
+  type: "ClusterIP"
 
 ---
 # Source: prometheus/templates/server-service.yaml
@@ -544,9 +563,10 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-server
+  name: prometheus-server
 spec:
   ports:
     - name: http
@@ -557,7 +577,8 @@ spec:
   selector:
     component: "server"
     app: prometheus
-      type: "NodePort"
+    
+  type: "NodePort"
 
 ---
 # Source: prometheus/templates/node-exporter-daemonset.yaml
@@ -567,15 +588,17 @@ metadata:
   labels:
     component: "node-exporter"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-node-exporter
+  name: prometheus-node-exporter
 spec:
   selector:
     matchLabels:
       component: "node-exporter"
       app: prometheus
-        updateStrategy:
+      
+  updateStrategy:
     type: RollingUpdate
     
   template:
@@ -583,10 +606,11 @@ spec:
       labels:
         component: "node-exporter"
         app: prometheus
-                chart: prometheus-8.9.2
+        
+        chart: prometheus-8.9.2
         heritage: Tiller
     spec:
-      serviceAccountName: -prometheus-node-exporter
+      serviceAccountName: prometheus-node-exporter
       containers:
         - name: prometheus-node-exporter
           image: "prom/node-exporter:v0.17.0"
@@ -625,24 +649,27 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-alertmanager
+  name: prometheus-alertmanager
 spec:
   selector:
     matchLabels:
       component: "alertmanager"
       app: prometheus
-        replicas: 1
+      
+  replicas: 1
   template:
     metadata:
       labels:
         component: "alertmanager"
         app: prometheus
-                chart: prometheus-8.9.2
+        
+        chart: prometheus-8.9.2
         heritage: Tiller
     spec:
-      serviceAccountName: -prometheus-alertmanager
+      serviceAccountName: prometheus-alertmanager
       containers:
         - name: prometheus-alertmanager
           image: "prom/alertmanager:v0.15.3"
@@ -693,7 +720,7 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: -prometheus-alertmanager
+            name: prometheus-alertmanager
         - name: storage-volume
           emptyDir: {}
 
@@ -705,24 +732,27 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-kube-state-metrics
+  name: prometheus-kube-state-metrics
 spec:
   selector:
     matchLabels:
       component: "kube-state-metrics"
       app: prometheus
-        replicas: 1
+      
+  replicas: 1
   template:
     metadata:
       labels:
         component: "kube-state-metrics"
         app: prometheus
-                chart: prometheus-8.9.2
+        
+        chart: prometheus-8.9.2
         heritage: Tiller
     spec:
-      serviceAccountName: -prometheus-kube-state-metrics
+      serviceAccountName: prometheus-kube-state-metrics
       containers:
         - name: prometheus-kube-state-metrics
           image: "quay.io/coreos/kube-state-metrics:v1.5.0"
@@ -742,24 +772,27 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-pushgateway
+  name: prometheus-pushgateway
 spec:
   selector:
     matchLabels:
       component: "pushgateway"
       app: prometheus
-        replicas: 1
+      
+  replicas: 1
   template:
     metadata:
       labels:
         component: "pushgateway"
         app: prometheus
-                chart: prometheus-8.9.2
+        
+        chart: prometheus-8.9.2
         heritage: Tiller
     spec:
-      serviceAccountName: -prometheus-pushgateway
+      serviceAccountName: prometheus-pushgateway
       containers:
         - name: prometheus-pushgateway
           image: "prom/pushgateway:v0.6.0"
@@ -785,24 +818,27 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-        chart: prometheus-8.9.2
+    
+    chart: prometheus-8.9.2
     heritage: Tiller
-  name: -prometheus-server
+  name: prometheus-server
 spec:
   selector:
     matchLabels:
       component: "server"
       app: prometheus
-        replicas: 1
+      
+  replicas: 1
   template:
     metadata:
       labels:
         component: "server"
         app: prometheus
-                chart: prometheus-8.9.2
+        
+        chart: prometheus-8.9.2
         heritage: Tiller
     spec:
-      serviceAccountName: -prometheus-server
+      serviceAccountName: prometheus-server
       initContainers:
       - name: "init-chown-data"
         image: "busybox:latest"
@@ -867,7 +903,7 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: -prometheus-server
+            name: prometheus-server
         - name: storage-volume
           emptyDir: {}
 ---
