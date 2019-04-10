@@ -6,8 +6,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-alertmanager
 data:
@@ -29,8 +28,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-server
 data:
@@ -239,8 +237,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-alertmanager
 ---
@@ -251,8 +248,7 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-kube-state-metrics
 ---
@@ -263,8 +259,7 @@ metadata:
   labels:
     component: "node-exporter"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-node-exporter
 ---
@@ -275,8 +270,7 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-pushgateway
 ---
@@ -288,8 +282,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-server
 
@@ -301,8 +294,7 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-kube-state-metrics
 rules:
@@ -374,8 +366,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-server
 rules:
@@ -415,8 +406,7 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-kube-state-metrics
 subjects:
@@ -436,8 +426,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-server
 subjects:
@@ -457,8 +446,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-alertmanager
 spec:
@@ -470,8 +458,7 @@ spec:
   selector:
     component: "alertmanager"
     app: prometheus
-    release: 
-  type: "ClusterIP"
+      type: "ClusterIP"
 
 ---
 # Source: prometheus/templates/kube-state-metrics-svc.yaml
@@ -484,8 +471,7 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-kube-state-metrics
 spec:
@@ -498,8 +484,7 @@ spec:
   selector:
     component: "kube-state-metrics"
     app: prometheus
-    release: 
-  type: "ClusterIP"
+      type: "ClusterIP"
 
 ---
 # Source: prometheus/templates/node-exporter-service.yaml
@@ -512,8 +497,7 @@ metadata:
   labels:
     component: "node-exporter"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-node-exporter
 spec:
@@ -526,8 +510,7 @@ spec:
   selector:
     component: "node-exporter"
     app: prometheus
-    release: 
-  type: "ClusterIP"
+      type: "ClusterIP"
 ---
 # Source: prometheus/templates/pushgateway-service.yaml
 apiVersion: v1
@@ -539,8 +522,7 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-pushgateway
 spec:
@@ -552,8 +534,7 @@ spec:
   selector:
     component: "pushgateway"
     app: prometheus
-    release: 
-  type: "ClusterIP"
+      type: "ClusterIP"
 
 ---
 # Source: prometheus/templates/server-service.yaml
@@ -563,8 +544,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-server
 spec:
@@ -577,8 +557,7 @@ spec:
   selector:
     component: "server"
     app: prometheus
-    release: 
-  type: "NodePort"
+      type: "NodePort"
 
 ---
 # Source: prometheus/templates/node-exporter-daemonset.yaml
@@ -588,8 +567,7 @@ metadata:
   labels:
     component: "node-exporter"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-node-exporter
 spec:
@@ -597,8 +575,7 @@ spec:
     matchLabels:
       component: "node-exporter"
       app: prometheus
-      release: 
-  updateStrategy:
+        updateStrategy:
     type: RollingUpdate
     
   template:
@@ -606,8 +583,7 @@ spec:
       labels:
         component: "node-exporter"
         app: prometheus
-        release: 
-        chart: prometheus-8.9.2
+                chart: prometheus-8.9.2
         heritage: Tiller
     spec:
       serviceAccountName: -prometheus-node-exporter
@@ -649,8 +625,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-alertmanager
 spec:
@@ -658,15 +633,13 @@ spec:
     matchLabels:
       component: "alertmanager"
       app: prometheus
-      release: 
-  replicas: 1
+        replicas: 1
   template:
     metadata:
       labels:
         component: "alertmanager"
         app: prometheus
-        release: 
-        chart: prometheus-8.9.2
+                chart: prometheus-8.9.2
         heritage: Tiller
     spec:
       serviceAccountName: -prometheus-alertmanager
@@ -732,8 +705,7 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-kube-state-metrics
 spec:
@@ -741,15 +713,13 @@ spec:
     matchLabels:
       component: "kube-state-metrics"
       app: prometheus
-      release: 
-  replicas: 1
+        replicas: 1
   template:
     metadata:
       labels:
         component: "kube-state-metrics"
         app: prometheus
-        release: 
-        chart: prometheus-8.9.2
+                chart: prometheus-8.9.2
         heritage: Tiller
     spec:
       serviceAccountName: -prometheus-kube-state-metrics
@@ -772,8 +742,7 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-pushgateway
 spec:
@@ -781,15 +750,13 @@ spec:
     matchLabels:
       component: "pushgateway"
       app: prometheus
-      release: 
-  replicas: 1
+        replicas: 1
   template:
     metadata:
       labels:
         component: "pushgateway"
         app: prometheus
-        release: 
-        chart: prometheus-8.9.2
+                chart: prometheus-8.9.2
         heritage: Tiller
     spec:
       serviceAccountName: -prometheus-pushgateway
@@ -818,8 +785,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: 
-    chart: prometheus-8.9.2
+        chart: prometheus-8.9.2
     heritage: Tiller
   name: -prometheus-server
 spec:
@@ -827,15 +793,13 @@ spec:
     matchLabels:
       component: "server"
       app: prometheus
-      release: 
-  replicas: 1
+        replicas: 1
   template:
     metadata:
       labels:
         component: "server"
         app: prometheus
-        release: 
-        chart: prometheus-8.9.2
+                chart: prometheus-8.9.2
         heritage: Tiller
     spec:
       serviceAccountName: -prometheus-server

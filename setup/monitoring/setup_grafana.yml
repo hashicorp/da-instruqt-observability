@@ -9,8 +9,7 @@ metadata:
     app: grafana
     chart: grafana-3.1.0
     heritage: Tiller
-    release: 
-  annotations:
+      annotations:
     seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
     seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
     apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
@@ -62,8 +61,7 @@ metadata:
   labels:
     app: grafana
     chart: grafana-3.1.0
-    release: 
-    heritage: Tiller
+        heritage: Tiller
 type: Opaque
 data:
   admin-user: "YWRtaW4="
@@ -79,8 +77,7 @@ metadata:
   labels:
     app: grafana
     chart: grafana-3.1.0
-    release: 
-    heritage: Tiller
+        heritage: Tiller
 data:
   grafana.ini: |
     [analytics]
@@ -145,8 +142,7 @@ metadata:
   labels:
     app: grafana
     chart: grafana-3.1.0
-    release: 
-    heritage: Tiller
+        heritage: Tiller
     dashboard-provider: default
 data:
 
@@ -160,8 +156,7 @@ metadata:
     app: -grafana
     chart: "grafana-3.1.0"
     heritage: "Tiller"
-    release: ""
-data:
+    data:
   run.sh: |-
     @test "Test Health" {
       url="http://-grafana/api/health"
@@ -180,8 +175,7 @@ metadata:
     app: grafana
     chart: grafana-3.1.0
     heritage: Tiller
-    release: 
-  name: -grafana
+      name: -grafana
 
 ---
 # Source: grafana/templates/clusterrole.yaml
@@ -192,8 +186,7 @@ metadata:
   labels:
     app: grafana
     chart: grafana-3.1.0
-    release: 
-    heritage: Tiller
+        heritage: Tiller
   name: -grafana-clusterrole
 rules: []
 
@@ -207,8 +200,7 @@ metadata:
   labels:
     app: grafana
     chart: grafana-3.1.0
-    release: 
-    heritage: Tiller
+        heritage: Tiller
 subjects:
   - kind: ServiceAccount
     name: -grafana
@@ -227,8 +219,7 @@ metadata:
     app: grafana
     chart: grafana-3.1.0
     heritage: Tiller
-    release: 
-rules:
+    rules:
 - apiGroups:      ['extensions']
   resources:      ['podsecuritypolicies']
   verbs:          ['use']
@@ -244,8 +235,7 @@ metadata:
     app: grafana
     chart: grafana-3.1.0
     heritage: Tiller
-    release: 
-roleRef:
+    roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: -grafana
@@ -262,8 +252,7 @@ metadata:
   labels:
     app: grafana
     chart: grafana-3.1.0
-    release: 
-    heritage: Tiller
+        heritage: Tiller
 spec:
   type: NodePort
   ports:
@@ -276,8 +265,7 @@ spec:
 
   selector:
     app: grafana
-    release: 
-
+    
 ---
 # Source: grafana/templates/tests/test.yaml
 apiVersion: v1
@@ -288,8 +276,7 @@ metadata:
     app: -grafana
     chart: "grafana-3.1.0"
     heritage: "Tiller"
-    release: ""
-  annotations:
+      annotations:
     "helm.sh/hook": test-success
 spec:
   initContainers:
@@ -332,22 +319,19 @@ metadata:
   labels:
     app: grafana
     chart: grafana-3.1.0
-    release: 
-    heritage: Tiller
+        heritage: Tiller
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: grafana
-      release: 
-  strategy:
+        strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
         app: grafana
-        release: 
-    spec:
+            spec:
       serviceAccountName: -grafana
       securityContext:
         fsGroup: 472

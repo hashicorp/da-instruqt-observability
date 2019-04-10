@@ -11,14 +11,12 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-spec:
+    spec:
   maxUnavailable: 0
   selector:
     matchLabels:
       app: consul
-      release: "release-name"
-      component: server
+            component: server
 
 ---
 # Source: consul/templates/client-config-configmap.yaml
@@ -33,8 +31,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-data:
+    data:
   extra-from-values.json: |-
     {}
     
@@ -51,8 +48,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-data:
+    data:
   extra-from-values.json: |-
     {}
     
@@ -69,8 +65,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-
+    
 ---
 # Source: consul/templates/connect-inject-serviceaccount.yaml
 
@@ -83,8 +78,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-
+    
 ---
 # Source: consul/templates/server-serviceaccount.yaml
 
@@ -97,8 +91,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-
+    
 ---
 # Source: consul/templates/client-clusterrole.yaml
 
@@ -110,8 +103,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-
+    
 ---
 # Source: consul/templates/connect-inject-clusterrole.yaml
 # The ClusterRole to enable the Connect injector to get, list, watch and patch MutatingWebhookConfiguration.
@@ -123,8 +115,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-rules:
+    rules:
 - apiGroups: ["admissionregistration.k8s.io"]
   resources: ["mutatingwebhookconfigurations"]
   verbs: 
@@ -144,8 +135,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-
+    
 ---
 # Source: consul/templates/client-clusterrolebinding.yaml
 
@@ -157,8 +147,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-roleRef:
+    roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: consul-client
@@ -178,8 +167,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-roleRef:
+    roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: consul-connect-injector-webhook
@@ -199,8 +187,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-roleRef:
+    roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: consul-server
@@ -221,15 +208,13 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-spec:
+    spec:
   ports:
   - port: 443
     targetPort: 8080
   selector:
     app: consul
-    release: "release-name"
-    component: connect-injector
+        component: connect-injector
 
 
 ---
@@ -244,8 +229,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-spec:
+    spec:
   ports:
     - name: dns-tcp
       port: 53
@@ -257,8 +241,7 @@ spec:
       targetPort: dns-udp
   selector:
     app: consul
-    release: "release-name"
-    hasDNS: "true"
+        hasDNS: "true"
 
 ---
 # Source: consul/templates/server-service.yaml
@@ -276,8 +259,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-  annotations:
+      annotations:
     # This must be set in addition to publishNotReadyAddresses due
     # to an open issue where it may not work:
     # https://github.com/kubernetes/kubernetes/issues/58662
@@ -320,8 +302,7 @@ spec:
       targetPort: dns-udp
   selector:
     app: consul
-    release: "release-name"
-    component: server
+        component: server
 
 ---
 # Source: consul/templates/ui-service.yaml
@@ -335,12 +316,10 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-spec:
+    spec:
   selector:
     app: consul
-    release: "release-name"
-    component: server
+        component: server
   ports:
     - name: http
       port: 80
@@ -360,22 +339,19 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-spec:
+    spec:
   selector:
     matchLabels:
       app: consul
       chart: consul-helm
-      release: release-name
-      component: client
+            component: client
       hasDNS: "true"
   template:
     metadata:
       labels:
         app: consul
         chart: consul-helm
-        release: release-name
-        component: client
+                component: client
         hasDNS: "true"
       annotations:
         "consul.hashicorp.com/connect-inject": "false"
@@ -481,22 +457,19 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-spec:
+    spec:
   replicas: 1
   selector:
     matchLabels:
       app: consul
       chart: consul-helm
-      release: release-name
-      component: connect-injector
+            component: connect-injector
   template:
     metadata:
       labels:
         app: consul
         chart: consul-helm
-        release: release-name
-        component: connect-injector
+                component: connect-injector
     spec:
       serviceAccountName: consul-connect-injector-webhook-svc-account
       containers:
@@ -552,8 +525,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-spec:
+    spec:
   serviceName: consul-server
   podManagementPolicy: Parallel
   replicas: 1
@@ -561,16 +533,14 @@ spec:
     matchLabels:
       app: consul
       chart: consul-helm
-      release: release-name
-      component: server
+            component: server
       hasDNS: "true"
   template:
     metadata:
       labels:
         app: consul
         chart: consul-helm
-        release: release-name
-        component: server
+                component: server
         hasDNS: "true"
       annotations:
         "consul.hashicorp.com/connect-inject": "false"
@@ -581,8 +551,7 @@ spec:
             - labelSelector:
                 matchLabels:
                   app: consul
-                  release: "release-name"
-                  component: server
+                                    component: server
               topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 10
       serviceAccountName: consul-server
@@ -688,8 +657,7 @@ metadata:
     app: consul
     chart: consul-helm
     heritage: Tiller
-    release: release-name
-webhooks:
+    webhooks:
   - name: consul-connect-injector.consul.hashicorp.com
     clientConfig:
       service:
