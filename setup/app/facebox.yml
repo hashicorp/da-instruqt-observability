@@ -4,112 +4,28 @@ kind: ConfigMap
 metadata:
   name: emojify-facebox-configmap
 data:
-  envoy-bootstrap: |
-    admin:
-      access_log_path: "/dev/null"
-      address:
-        socket_address:
-          address: 127.0.0.1
-          port_value: 19000
-    node:
-      cluster: "${POD_NAME}-emojify-facebox-proxy"
-      id: "${POD_NAME}-emojify-facebox-proxy"
-    static_resources:
-      clusters:
-      - name: local_agent
-        connect_timeout: 1s
-        type: STATIC
-        http2_protocol_options: {}
-        hosts:
-        - socket_address:
-           address: "${HOST_IP}"
-           port_value: "8502"
-    dynamic_resources:
-      lds_config:
-        ads: {}
-      cds_config:
-        ads: {}
-      ads_config:
-        api_type: GRPC
-        grpc_services:
-          envoy_grpc:
-            cluster_name: local_agent
-    stats_sinks:
-    - name: "envoy.dog_statsd"
-      config:
-        address: 
-          socket_address:
-            address: "127.0.0.1"
-            port_value: 9125
-        prefix: "envoy"
-    stats_config:
-      use_all_default_tags: true
   consul-config: |
     services {
-      id   = "${POD_NAME}-emojify-facebox-proxy"
-      name = "emojify-facebox-proxy"
-      kind = "connect-proxy"
+      id   = "${POD_NAME}-emojify-facebox"
+      name = "emojify-facebox"
       address = "${POD_IP}"
-      port = 20000
+      port = 8080
     
-      proxy {
-        destination_service_name = "emojify-facebox"
-        destination_service_id = "emojify-facebox"
-        local_service_address = "127.0.0.1"
-        local_service_port = 8080
-        
-        config {
-          envoy_public_listener_json = <<EOL
-            {
-              "@type": "type.googleapis.com/envoy.api.v2.Listener",
-              "name": "public_listener:${POD_IP}:20000",
-              "address": {
-                "socketAddress": {
-                  "address": "${POD_IP}",
-                  "portValue": 20000
-                }
-              },
-              "filterChains": [
-                {
-                  "filters": [
-                    {
-                      "name": "envoy.http_connection_manager",
-                      "config": {
-                        "stat_prefix": "ingress_facebox",
-                        "route_config": {                
-                          "name": "local_route",         
-                          "virtual_hosts": [             
-                            {                            
-                              "name": "backend",         
-                              "domains": ["*"],          
-                              "routes": [                
-                                {                        
-                                  "match": {             
-                                    "prefix": "/"        
-                                  },                     
-                                  "route": {             
-                                    "cluster": "local_app"
-                                  }                      
-                                }                        
-                              ]                          
-                            }                            
-                          ]                              
-                        },                               
-                        "http_filters": [                
-                          {                              
-                            "name": "envoy.router",      
-                            "config": {}                 
-                          }                              
-                        ]                                
-                      }                                  
-                    }                                    
-                  ]                                      
-                }                                        
-              ]                                          
-            }                                          
-          EOL
-        }                                              
-      }                                                
+      connect {
+        sidecar_service {
+          port = 20000
+
+          proxy {
+            local_service_address = "127.0.0.1"
+            local_service_port = 8080
+
+            config {
+              protocol = "http"
+              envoy_statsd_url = "udp://127.0.0.1:9125"
+            }
+          }
+        }
+      }                                           
                                                        
       checks {                                         
         name = "Proxy Public Listener"                 

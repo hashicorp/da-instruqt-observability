@@ -49,245 +49,43 @@ data:
         }
       }
     }
-  envoy-bootstrap: |
-    admin:
-      access_log_path: "/dev/null"
-      address:
-        socket_address:
-          address: 127.0.0.1
-          port_value: 19000
-    node:
-      cluster: "${POD_NAME}-emojify-ingress-proxy"
-      id: "${POD_NAME}-emojify-ingress-proxy"
-    static_resources:
-      clusters:
-      - name: local_agent
-        connect_timeout: 1s
-        type: STATIC
-        http2_protocol_options: {}
-        hosts:
-        - socket_address:
-           address: "${HOST_IP}"
-           port_value: "8502"
-    dynamic_resources:
-      lds_config:
-        ads: {}
-      cds_config:
-        ads: {}
-      ads_config:
-        api_type: GRPC
-        grpc_services:
-          envoy_grpc:
-            cluster_name: local_agent
-    stats_sinks:
-    - name: "envoy.dog_statsd"
-      config:
-        address: 
-          socket_address:
-            address: "127.0.0.1"
-            port_value: 9125
-        prefix: "envoy"
-    stats_config:
-      use_all_default_tags: true
   consul-config: |
     services {
-      id   = "${POD_NAME}-emojify-ingress-proxy"
-      name = "emojify-ingress-proxy"
-      kind = "connect-proxy"
+      id   = "${POD_NAME}-emojify-ingress"
+      name = "emojify-ingress"
       address = "${POD_IP}"
-      port = 20000
+      port = 80
     
-      proxy {
-        destination_service_name = "emojify-ingress"
-        destination_service_id = "emojify-ingress"
-        local_service_address = "127.0.0.1"
-        local_service_port = 80
+      connect {
+        sidecar_service {
+          port = 20000
 
-        config {
-          envoy_public_listener_json = <<EOL
-          {
-          "@type": "type.googleapis.com/envoy.api.v2.Listener",
-          "name": "public_listener:${POD_IP}:20000",
-          "address": {
-            "socketAddress": {
-              "address": "${POD_IP}",
-              "portValue": 20000
+          proxy {
+            local_service_address = "127.0.0.1"
+            local_service_port = 80
+
+            config {
+              protocol = "http"
+              envoy_statsd_url = "udp://127.0.0.1:9125"
             }
-          },
-          "filterChains": [
-            {
-              "filters": [
-                {
-                  "name": "envoy.http_connection_manager",
-                  "config": {
-                    "stat_prefix": "ingress_http",
-                    "route_config": {
-                      "name": "local_route",
-                      "virtual_hosts": [
-                        {
-                          "name": "backend",
-                          "domains": ["*"],
-                          "routes": [
-                            {
-                              "match": {
-                                "prefix": "/"
-                              },
-                              "route": {
-                                "cluster": "local_app"
-                              }
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    "http_filters": [
-                      {
-                        "name": "envoy.router",
-                        "config": {}
-                      }
-                    ]
-                  }
+
+            upstreams {
+                destination_name = "emojify-website"                                                                   
+                local_bind_port = 8000
+
+                config {
+                    protocol = "http"
                 }
-              ]
             }
-          ]
-        }
-          EOL
-        }
 
-        upstreams {                                                         
-          destination_name = "emojify-website"                                                                   
-          local_bind_port = 8000
+            upstreams {
+                destination_name = "emojify-api"                                                                   
+                local_bind_port = 8001
 
-          config {
-            envoy_listener_json = <<EOL
-              {
-              "@type": "type.googleapis.com/envoy.api.v2.Listener",
-              "name": "service:emojify-website:8000",
-              "address": {
-                "socketAddress": {
-                  "address": "127.0.0.1",
-                  "portValue": 8000
+                config {
+                    protocol = "http"
                 }
-              },
-              "filterChains": [
-                {
-                  "filters": [
-                    {
-                      "name": "envoy.http_connection_manager",
-                      "config": {
-                        "stat_prefix": "service:emojify-website",
-                        "route_config": {
-                          "name": "local_route",
-                          "virtual_hosts": [
-                            {
-                              "name": "backend",
-                              "domains": ["*"],
-                              "routes": [
-                                {
-                                  "match": {
-                                    "prefix": "/"
-                                  },
-                                  "route": {
-                                    "cluster": "service:emojify-website"
-                                  }
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        "http_filters": [
-                          {
-                            "name": "envoy.router",
-                            "config": {}
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              ]
             }
-            EOL
-          }
-        }              
-
-        upstreams {                                           
-          destination_name = "emojify-api"                      
-          local_bind_port = 8001
-          
-          config {
-            envoy_cluster_json = <<EOL
-              {
-                "@type": "type.googleapis.com/envoy.api.v2.Cluster",
-                "name": "service:emojify-api",
-                "type": "EDS",
-                "eds_cluster_config": {
-                  "eds_config": {
-                    "ads": {}
-                  }
-                },
-                "connect_timeout": "5s",
-                "outlier_detection": {
-                  "consecutive_5xx": 5,
-                  "base_ejection_time": "30s"
-                }
-              }
-            EOL
-
-            envoy_listener_json = <<EOL
-              {
-              "@type": "type.googleapis.com/envoy.api.v2.Listener",
-              "name": "service:emojify-api:8001",
-              "address": {
-                "socketAddress": {
-                  "address": "127.0.0.1",
-                  "portValue": 8001
-                }
-              },
-              "filterChains": [
-                {
-                  "filters": [
-                    {
-                      "name": "envoy.http_connection_manager",
-                      "config": {
-                        "stat_prefix": "service:emojify-api",
-                        "route_config": {
-                          "name": "local_route",
-                          "virtual_hosts": [
-                            {
-                              "name": "backend",
-                              "domains": ["*"],
-                              "routes": [
-                                {
-                                  "match": {
-                                    "prefix": "/"
-                                  },
-                                  "route": {
-                                    "cluster": "service:emojify-api",
-                                    "retry_policy": {
-                                      "retry_on": "5xx",
-                                      "num_retries": 5
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        "http_filters": [
-                          {
-                            "name": "envoy.router",
-                            "config": {}
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-            EOL
           }
         }
       }
