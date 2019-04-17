@@ -1,23 +1,26 @@
 slug: service-mesh-observability
 id: njadnirvzrcr
 type: track
-title: Observability
-teaser: Observability
-description: Observability
+title: Observability with Consul Connect on Kubernetes
+teaser: Learn how to add observability to your applications on Kubernetes using Consul
+  Connect.
+description: This track will show you how to enable the Observability features to
+  gain additional insights in the state and performance of your applications.
 icon: https://storage.googleapis.com/instruqt-frontend/assets/hashicorp/tracks/consul.png
 tags:
-- ""
+- consul
+- connect
+- hashicorp
 owner: hashicorp
 developers:
-- pbanks@hashicorp.com
 - jackson.nic@gmail.com
 - christie@hashicorp.com
 - anubhav9mishra@gmail.com
 - eveld@hashicorp.com
-private: false
-published: false
+private: true
+published: true
 challenges:
-- slug: setup
+- slug: register-service
   id: 84xtosecbfvb
   type: challenge
   title: Setup
@@ -57,4 +60,4 @@ challenges:
     port: 30010
   difficulty: basic
   timelimit: 3600
-checksum: "4121710230601866135"
+checksum: "15929356919881209656"
