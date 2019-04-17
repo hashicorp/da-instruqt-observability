@@ -81,8 +81,6 @@ spec:
         configMap:
           name: emojify-website-configmap
           items:
-          - key: envoy-bootstrap
-            path: envoy_bootstrap.yaml
           - key: consul-config
             path: envoy_consul_config.hcl
       - name: envoy-config
@@ -105,9 +103,8 @@ spec:
           readOnly: false
 
       - name: envoy-sidecar
-        image: "envoyproxy/envoy-alpine:v1.8.0"
+        image: "envoyproxy/envoy-alpine:v1.9.0"
         command: ["envoy"]
-        args: ["-c","/consul-init/bootstrap.yaml"]
         ports:
           - containerPort: 20000
         volumeMounts:
@@ -120,7 +117,7 @@ spec:
               command: [
                "sh",
                "-c",
-               "/consul-init/consul services deregister -http-addr=http://${HOST_IP}:8500 -id=${POD_NAME}-emojify-website-proxy"
+               "/consul-init/consul services deregister -http-addr=http://${HOST_IP}:8500 -id=${POD_NAME}-emojify-website"
                ]
         env:
         - name: HOST_IP
