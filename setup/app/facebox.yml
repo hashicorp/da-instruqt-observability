@@ -4,6 +4,7 @@ kind: ConfigMap
 metadata:
   name: emojify-facebox-configmap
 data:
+  envoy-bootstrap: |
   consul-config: |
     services {
       id   = "${POD_NAME}-emojify-facebox"
@@ -64,6 +65,8 @@ spec:
         configMap:
           name: emojify-facebox-configmap
           items:
+          - key: envoy-bootstrap
+            path: envoy_bootstrap.yaml
           - key: consul-config
             path: envoy_consul_config.hcl
       - name: envoy-config

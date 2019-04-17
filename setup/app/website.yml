@@ -15,6 +15,7 @@ data:
       OAUTH_ENABLED: false,
       AUTH_DISABLED: true
     };
+  envoy-bootstrap: |
   consul-config: |
     services {
       id   = "${POD_NAME}-emojify-website"
@@ -81,6 +82,8 @@ spec:
         configMap:
           name: emojify-website-configmap
           items:
+          - key: envoy-bootstrap
+            path: envoy_bootstrap.yaml
           - key: consul-config
             path: envoy_consul_config.hcl
       - name: envoy-config

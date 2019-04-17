@@ -4,6 +4,7 @@ kind: ConfigMap
 metadata:
   name: emojify-api-external-cache-configmap
 data:
+  envoy-bootstrap: |
   consul-config: |
     services {
       id   = "${POD_NAME}-emojify-api"
@@ -82,6 +83,8 @@ spec:
         configMap:
           name: emojify-api-external-cache-configmap
           items:
+          - key: envoy-bootstrap
+            path: envoy_bootstrap.yaml
           - key: consul-config
             path: envoy_consul_config.hcl
       - name: envoy-config
