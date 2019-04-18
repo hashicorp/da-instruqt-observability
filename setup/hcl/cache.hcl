@@ -12,7 +12,6 @@ services {
                 local_service_port = 9090
 
                 config {
-                    protocol = "http"
                     envoy_statsd_url = "udp://127.0.0.1:9125"
                 }
             }

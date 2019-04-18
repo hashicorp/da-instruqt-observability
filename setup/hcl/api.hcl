@@ -28,10 +28,6 @@ services {
         upstreams {
             destination_name = "emojify-cache"                                                                   
             local_bind_port = 8005
-
-            config {
-                protocol = "http"
-            }
         }
       }
     }
