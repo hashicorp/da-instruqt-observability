@@ -1,7 +1,7 @@
 services {
     id   = "emojify-facebox"
     name = "emojify-facebox"
-    port = 8080
+    port = 9090
 
     connect {
         sidecar_service {
@@ -9,7 +9,7 @@ services {
 
             proxy {
                 local_service_address = "127.0.0.1"
-                local_service_port = 8080
+                local_service_port = 9090
 
                 config {
                     protocol = "http"
