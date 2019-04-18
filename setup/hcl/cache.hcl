@@ -5,7 +5,7 @@ services {
 
     connect {
         sidecar_service {
-            port = 20000
+            port = 20005
 
             proxy {
                 local_service_address = "127.0.0.1"

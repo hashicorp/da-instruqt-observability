@@ -45,10 +45,6 @@ challenges:
   - title: Shell
     type: terminal
     hostname: kubernetes
-  - title: Editor
-    type: code
-    hostname: kubernetes
-    path: /root
   - title: Grafana
     type: service
     hostname: kubernetes
@@ -58,6 +54,10 @@ challenges:
     hostname: kubernetes
     path: /ui/
     port: 30010
+  - title: Editor
+    type: code
+    hostname: kubernetes
+    path: /tmp/observability/setup
   difficulty: basic
   timelimit: 3600
-checksum: "6784736195305666434"
+checksum: "5520302921024706465"
