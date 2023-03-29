@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MIT
+
 services {
   id   = "emojify-api"
   name = "emojify-api"
